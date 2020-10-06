@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, Redirect, Router } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { LinksPage } from "./LinksPage";
 import { CreatePage } from "./CreatePage";
 import { DetailPage } from "./DetailPage";

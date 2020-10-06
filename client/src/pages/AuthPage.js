@@ -1,21 +1,53 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useHttp } from "../hooks/http.hook";
+import { useMessage } from "../hooks/message.hook";
 
 export const AuthPage = () => {
+  const { login, logout, token, userId, isAuthenticated } = useContext(
+    AuthContext
+  );
+
+  const { loading, errors, request, clearError } = useHttp();
+  const message = useMessage();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
+  useEffect(() => {
+    message(errors);
+    clearError();
+  }, [errors, message, clearError]);
+
+  useEffect(() => {
+    window.M.updateTextFields();
+  }, []);
+
   const changeHandler = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    console.log(form);
+  };
+
+  const registerHandler = async () => {
+    try {
+      const data = await request("/api/auth/register", "POST", { ...form });
+      message(data.message);
+    } catch (e) {}
+  };
+  const loginHandler = async () => {
+    try {
+      const data = await request("/api/auth/login", "POST", { ...form });
+      message(data.message);
+      if (data.token) login(data.token, data.userId);
+    } catch (e) {}
   };
 
   return (
     <div className="row">
       <div className="col s6 offset-s3">
         <h1>Cut The URL</h1>
-        <div className="card teal lighten-1">
+        <div className="card green darken-1">
           <div className="card-content white-text">
             <span className="card-title">Authorization</span>
             <div>
@@ -46,14 +78,23 @@ export const AuthPage = () => {
               </div>
             </div>
           </div>
+
           <div className="card-action">
             <button
               className="btn lime lighten-2 black-text"
               style={{ marginRight: 10 }}
+              onClick={loginHandler}
+              disabled={loading}
             >
               Login
             </button>
-            <button className="btn grey lighten-1 black-text">Sign Up</button>
+            <button
+              className="btn grey lighten-1 black-text"
+              onClick={registerHandler}
+              disabled={loading}
+            >
+              Sign Up
+            </button>
           </div>
         </div>
       </div>
