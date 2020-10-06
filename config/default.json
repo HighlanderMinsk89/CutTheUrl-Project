@@ -1,5 +1,6 @@
 {
   "port": 5000,
   "mongoUri": "mongodb+srv://slava:12345qwerty@cluster0.c2cbs.azure.mongodb.net/app?retryWrites=true&w=majority",
-  "jwtSecret": "slava cuttheurl project"
+  "jwtSecret": "slava cuttheurl project",
+  "baseUrl": "http://localhost:5000"
 }

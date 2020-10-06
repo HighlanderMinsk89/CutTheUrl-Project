@@ -4,9 +4,7 @@ import { useHttp } from "../hooks/http.hook";
 import { useMessage } from "../hooks/message.hook";
 
 export const AuthPage = () => {
-  const { login, logout, token, userId, isAuthenticated } = useContext(
-    AuthContext
-  );
+  const { login } = useContext(AuthContext);
 
   const { loading, errors, request, clearError } = useHttp();
   const message = useMessage();
